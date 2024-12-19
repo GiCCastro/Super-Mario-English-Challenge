@@ -79,8 +79,7 @@ if(window.SpeechRecognition || window.webkitSpeechRecognition){
         correctAnswer =  document.getElementById("box_color").innerText.toUpperCase();
         if(transcritionAudio === correctAnswer){
             updateScore(1)
-            console.log("Recarregando a página...");
-            window.location.reload();
+            applyColor(drawColor());
         }else{
             updateScore(-1)
         }
