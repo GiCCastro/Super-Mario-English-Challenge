@@ -6,7 +6,7 @@ var engine = {
         'red': '#e90808',
         'yellow': '#e7d703',
         'black': '#141414',
-        'orange': 'f16529',
+        'orange': '#f16529',
         'grey': '#c0c0c0',
         'pink': '#ff0a54'
     },
@@ -43,6 +43,7 @@ function updateScore(value) {
         audioLoser.play();
     } else {
         audioCurrency.play();
+        applyColor(drawColor());
     }
 
     score.innerText = engine.moedas;
@@ -79,7 +80,6 @@ if(window.SpeechRecognition || window.webkitSpeechRecognition){
         correctAnswer =  document.getElementById("box_color").innerText.toUpperCase();
         if(transcritionAudio === correctAnswer){
             updateScore(1)
-            applyColor(drawColor());
         }else{
             updateScore(-1)
         }
