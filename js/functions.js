@@ -43,53 +43,61 @@ function updateScore(value) {
         audioLoser.play();
     } else {
         audioCurrency.play();
-        applyColor(drawColor());
     }
 
     score.innerText = engine.moedas;
 }
 
+function handleCorrectAnswer() {
+    updateScore(1);
+    var newColor = drawColor();
+    applyColor(newColor);
+}
+
+function handleIncorrectAnswer() {
+    updateScore(-1);
+}
+
 applyColor(drawColor());
 
-//API DE RECONHECIMENTO DE VOZ
-var btnRecorder = document.getElementById("btn_respond")
+// API DE RECONHECIMENTO DE VOZ
+var btnRecorder = document.getElementById("btn_respond");
 var transcritionAudio = "";
-var correctAnswer = ""
+var correctAnswer = "";
 
-if(window.SpeechRecognition || window.webkitSpeechRecognition){
+if (window.SpeechRecognition || window.webkitSpeechRecognition) {
     var SpeechAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
     var recorder = new SpeechAPI();
 
-    recorder.continuos = false;
+    recorder.continuous = false;
     recorder.lang = 'en-US';
 
-    recorder.onstart = function(){
-        btnRecorder.innerText = "Gravando..."
+    recorder.onstart = function() {
+        btnRecorder.innerText = "Gravando...";
         btnRecorder.style.backgroundColor = "white";
         btnRecorder.style.color = "#1a63c3";
     }
 
-    recorder.onend = function(){
-        btnRecorder.innerText = "RESPONDER"
+    recorder.onend = function() {
+        btnRecorder.innerText = "RESPONDER";
         btnRecorder.style.backgroundColor = "transparent";
         btnRecorder.style.color = "white";
     }
 
-    recorder.onresult = function(event){
+    recorder.onresult = function(event) {
         transcritionAudio = event.results[0][0].transcript.toUpperCase();
-        correctAnswer =  document.getElementById("box_color").innerText.toUpperCase();
-        if(transcritionAudio === correctAnswer){
-            updateScore(1)
-        }else{
-            updateScore(-1)
+        correctAnswer = document.getElementById("box_color").innerText.toUpperCase();
+        if (transcritionAudio === correctAnswer) {
+            handleCorrectAnswer();
+        } else {
+            handleIncorrectAnswer();
         }
     }
 
-}else{
+} else {
     alert('não tem suporte');
 }
 
-btnRecorder.addEventListener('click', function(){
+btnRecorder.addEventListener('click', function() {
     recorder.start();
-
-})
+});
